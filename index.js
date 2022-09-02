@@ -37,13 +37,12 @@ server.post("/participants", async  (req,res) =>{
     }
     
     try{
-
         const insertedUser =  await database.collection("participants").insertOne(participant);
         const insertedMessage =  await database.collection("messages").insertOne(loginMessage);
         console.log(insertedUser)
         console.log(insertedMessage)
         console.log("oi")
-        res.status(201);
+        res.sendStatus(201);
     }catch(error){
         res.status(500);
         console.log("errou")
@@ -60,7 +59,16 @@ server.get("/participants", async (req,res) =>{
   }
 });
 
+server.get("/messages", async (req,res) =>{
+  const limit = req.query.limit;
+  const user = req.headers.user;
 
+  let messages = await database.collection("messages").find({}).toArray();
+  messages.reverse();
+  messages.reverse();
+  res.send(messages)
+  console.log(messages)
+})
 //setInterval(async() => {
   //console.log("ola")
 //}, 1500);
